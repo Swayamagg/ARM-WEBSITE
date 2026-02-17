@@ -12,8 +12,12 @@ export const ThemeProvider = ({ children }) => {
     localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
+      document.body.classList.add('dark:bg-gray-900', 'dark:text-gray-100');
+      document.body.classList.remove('bg-cream', 'text-coffee-900');
     } else {
       document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark:bg-gray-900', 'dark:text-gray-100');
+      document.body.classList.add('bg-cream', 'text-coffee-900');
     }
   }, [isDarkMode]);
 

@@ -23,16 +23,32 @@
     @apply bg-white/20 backdrop-blur-lg border border-white/30;
   }
   
+  .dark .glass-morphism {
+    @apply bg-gray-800/20 backdrop-blur-lg border border-gray-700/30;
+  }
+  
   .premium-shadow {
     @apply shadow-2xl shadow-coffee-200/50;
+  }
+  
+  .dark .premium-shadow {
+    @apply shadow-2xl shadow-gray-800/50;
   }
   
   .cafe-button {
     @apply bg-gradient-to-r from-coffee-600 to-coffee-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-coffee-700 hover:to-coffee-800 transform hover:scale-105 transition-all duration-300 shadow-lg;
   }
   
+  .dark .cafe-button {
+    @apply bg-gradient-to-r from-coffee-500 to-coffee-600 hover:from-coffee-600 hover:to-coffee-700;
+  }
+  
   .input-field {
     @apply w-full px-4 py-3 rounded-lg border border-coffee-200 focus:border-coffee-400 focus:ring-2 focus:ring-coffee-200 transition-all duration-300 bg-white/80 backdrop-blur;
+  }
+  
+  .dark .input-field {
+    @apply border-gray-600 focus:border-gray-400 focus:ring-gray-400 bg-gray-800/80 text-white;
   }
   
   .card-hover {

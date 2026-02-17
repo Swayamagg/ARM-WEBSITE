@@ -12,6 +12,7 @@ const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('popularity');
+  const [loadedImages, setLoadedImages] = useState({});
   const { addToCart } = useCart();
 
   const menuItems = useMemo(() => [
@@ -22,7 +23,7 @@ const Menu = () => {
       description: "Fresh mozzarella, basil, tomato sauce on thin crust",
       price: 299,
       category: "pizza",
-      image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=400",
+      image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=400&h=300&fit=crop&auto=format",
       rating: 4.8,
       isVeg: true,
       isPopular: true,
@@ -35,7 +36,7 @@ const Menu = () => {
       description: "Double pepperoni, mozzarella, tomato sauce",
       price: 399,
       category: "pizza",
-      image: "https://images.unsplash.com/photo-1628843676373-663b96b383a7?w=400",
+      image: "https://images.unsplash.com/photo-1628843676373-663b96b383a7?w=400&h=300&fit=crop&auto=format",
       rating: 4.9,
       isVeg: false,
       isPopular: true,
@@ -48,7 +49,7 @@ const Menu = () => {
       description: "Bell peppers, mushrooms, onions, olives, corn",
       price: 349,
       category: "pizza",
-      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400",
+      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop&auto=format",
       rating: 4.6,
       isVeg: true,
       isPopular: false,
@@ -63,7 +64,7 @@ const Menu = () => {
       description: "Double patty, cheese, lettuce, tomato, special sauce",
       price: 249,
       category: "burgers",
-      image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400",
+      image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop&auto=format",
       rating: 4.9,
       isVeg: false,
       isPopular: true,
@@ -76,7 +77,7 @@ const Menu = () => {
       description: "Plant-based patty, avocado, sprouts, whole wheat bun",
       price: 229,
       category: "burgers",
-      image: "https://images.unsplash.com/photo-1550317138-10000687a72b?w=400",
+      image: "https://images.unsplash.com/photo-1550317138-10000687a72b?w=400&h=300&fit=crop&auto=format",
       rating: 4.5,
       isVeg: true,
       isPopular: false,
@@ -89,7 +90,7 @@ const Menu = () => {
       description: "Triple cheese, caramelized onions, pickles",
       price: 279,
       category: "burgers",
-      image: "https://images.unsplash.com/photo-1588167338535-93a79bce114f?w=400",
+      image: "https://images.unsplash.com/photo-1588167338535-93a79bce114f?w=400&h=300&fit=crop&auto=format",
       rating: 4.7,
       isVeg: true,
       isPopular: true,
@@ -104,7 +105,7 @@ const Menu = () => {
       description: "Crispy golden fries with peri-peri seasoning",
       price: 99,
       category: "snacks",
-      image: "https://images.unsplash.com/photo-1576107232684-1279f390b9c2?w=400",
+      image: "https://images.unsplash.com/photo-1576107232684-1279f390b9c2?w=400&h=300&fit=crop&auto=format",
       rating: 4.4,
       isVeg: true,
       isPopular: false,
@@ -117,7 +118,7 @@ const Menu = () => {
       description: "6 pieces with BBQ sauce and dip",
       price: 189,
       category: "snacks",
-      image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400",
+      image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=300&fit=crop&auto=format",
       rating: 4.8,
       isVeg: false,
       isPopular: true,
@@ -130,7 +131,7 @@ const Menu = () => {
       description: "Crispy battered onion rings with ranch dip",
       price: 129,
       category: "snacks",
-      image: "https://images.unsplash.com/photo-1526428164438-0f8c6f9bb5e9?w=400",
+      image: "https://images.unsplash.com/photo-1526428164438-0f8c6f9bb5e9?w=400&h=300&fit=crop&auto=format",
       rating: 4.3,
       isVeg: true,
       isPopular: false,
@@ -145,7 +146,7 @@ const Menu = () => {
       description: "Chilled coffee with ice cream and chocolate syrup",
       price: 149,
       category: "beverages",
-      image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400",
+      image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=300&fit=crop&auto=format",
       rating: 4.7,
       isVeg: true,
       isPopular: true,
@@ -158,7 +159,7 @@ const Menu = () => {
       description: "Refreshing lime soda with mint",
       price: 79,
       category: "beverages",
-      image: "https://images.unsplash.com/photo-1581009628624-7d8a8ea5a9e8?w=400",
+      image: "https://images.unsplash.com/photo-1581009628624-7d8a8ea5a9e8?w=400&h=300&fit=crop&auto=format",
       rating: 4.2,
       isVeg: true,
       isPopular: false,
@@ -171,7 +172,7 @@ const Menu = () => {
       description: "Thick mango shake with vanilla ice cream",
       price: 169,
       category: "beverages",
-      image: "https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=400",
+      image: "https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=400&h=300&fit=crop&auto=format",
       rating: 4.6,
       isVeg: true,
       isPopular: true,
@@ -186,7 +187,7 @@ const Menu = () => {
       description: "Warm chocolate cake with molten center",
       price: 189,
       category: "desserts",
-      image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400",
+      image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop&auto=format",
       rating: 4.9,
       isVeg: true,
       isPopular: true,
@@ -199,7 +200,7 @@ const Menu = () => {
       description: "Vanilla ice cream with chocolate sauce and nuts",
       price: 149,
       category: "desserts",
-      image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400",
+      image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=300&fit=crop&auto=format",
       rating: 4.5,
       isVeg: true,
       isPopular: false,
@@ -212,7 +213,7 @@ const Menu = () => {
       description: "Warm brownie with ice cream and caramel",
       price: 179,
       category: "desserts",
-      image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400",
+      image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop&auto=format",
       rating: 4.8,
       isVeg: true,
       isPopular: true,
@@ -265,6 +266,15 @@ const Menu = () => {
 
     return sorted;
   }, [selectedCategory, searchTerm, sortBy, menuItems]);
+
+  const handleImageLoad = (itemId) => {
+    setLoadedImages(prev => ({ ...prev, [itemId]: true }));
+  };
+
+  const handleImageError = (e, itemId) => {
+    e.target.src = `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop&auto=format`;
+    setLoadedImages(prev => ({ ...prev, [itemId]: true }));
+  };
 
   const handleAddToCart = (item) => {
     addToCart(item);
@@ -342,10 +352,20 @@ const Menu = () => {
           {filteredAndSortedItems.map((item) => (
             <div key={item.id} className="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
               <div className="relative">
+                {!loadedImages[item.id] && (
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+                  </div>
+                )}
                 <img 
                   src={item.image} 
                   alt={item.name}
-                  className="w-full h-48 object-cover"
+                  className={`w-full h-48 object-cover transition-opacity duration-300 ${
+                    loadedImages[item.id] ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  onLoad={() => handleImageLoad(item.id)}
+                  onError={(e) => handleImageError(e, item.id)}
+                  loading="lazy"
                 />
                 {item.isPopular && (
                   <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center">

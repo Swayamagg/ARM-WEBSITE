@@ -14,6 +14,7 @@ const Checkout = () => {
   const { items, getTotalPrice, clearCart } = useCart();
   const [step, setStep] = useState(1);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [loadedImages, setLoadedImages] = useState({});
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,6 +25,15 @@ const Checkout = () => {
     paymentMethod: 'cash',
     specialInstructions: ''
   });
+
+  const handleImageLoad = (itemId) => {
+    setLoadedImages(prev => ({ ...prev, [itemId]: true }));
+  };
+
+  const handleImageError = (e, itemId) => {
+    e.target.src = `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=60&h=60&fit=crop&auto=format`;
+    setLoadedImages(prev => ({ ...prev, [itemId]: true }));
+  };
 
   const deliveryCharges = formData.deliveryType === 'delivery' ? 40 : 0;
   const subtotal = getTotalPrice();
@@ -350,7 +360,24 @@ const Checkout = () => {
               
               <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
                 {items.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between">
+                  <div key={item.id} className="flex items-center space-x-3">
+                    <div className="relative w-12 h-12 flex-shrink-0">
+                      {!loadedImages[`${item.id}-checkout`] && (
+                        <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg flex items-center justify-center">
+                          <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
+                        </div>
+                      )}
+                      <img 
+                        src={item.image} 
+                        alt={item.name}
+                        className={`w-12 h-12 object-cover rounded-lg transition-opacity duration-300 ${
+                          loadedImages[`${item.id}-checkout`] ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        onLoad={() => handleImageLoad(`${item.id}-checkout`)}
+                        onError={(e) => handleImageError(e, `${item.id}-checkout`)}
+                        loading="lazy"
+                      />
+                    </div>
                     <div className="flex-1">
                       <h4 className="font-medium text-coffee-900 text-sm">{item.name}</h4>
                       <p className="text-xs text-coffee-600">Qty: {item.quantity}</p>

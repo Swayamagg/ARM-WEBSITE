@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { XMarkIcon, MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useCart } from '../context/CartContext';
 
 const Cart = ({ isOpen, onClose }) => {
   const { items, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart();
+  const [loadedImages, setLoadedImages] = useState({});
+
+  const handleImageLoad = (itemId) => {
+    setLoadedImages(prev => ({ ...prev, [itemId]: true }));
+  };
+
+  const handleImageError = (e, itemId) => {
+    e.target.src = `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=80&h=80&fit=crop&auto=format`;
+    setLoadedImages(prev => ({ ...prev, [itemId]: true }));
+  };
 
   if (!isOpen) return null;
 
@@ -52,11 +62,23 @@ const Cart = ({ isOpen, onClose }) => {
                 {items.map((item) => (
                   <div key={item.id} className="bg-coffee-50 rounded-lg p-4">
                     <div className="flex items-start space-x-4">
-                      <img 
-                        src={item.image} 
-                        alt={item.name}
-                        className="w-20 h-20 object-cover rounded-lg"
-                      />
+                      <div className="relative w-20 h-20 flex-shrink-0">
+                        {!loadedImages[`${item.id}-cart`] && (
+                          <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                          </div>
+                        )}
+                        <img 
+                          src={item.image} 
+                          alt={item.name}
+                          className={`w-20 h-20 object-cover rounded-lg transition-opacity duration-300 ${
+                            loadedImages[`${item.id}-cart`] ? 'opacity-100' : 'opacity-0'
+                          }`}
+                          onLoad={() => handleImageLoad(`${item.id}-cart`)}
+                          onError={(e) => handleImageError(e, `${item.id}-cart`)}
+                          loading="lazy"
+                        />
+                      </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-coffee-900">{item.name}</h3>
                         <p className="text-sm text-coffee-600 mb-2">{item.description}</p>

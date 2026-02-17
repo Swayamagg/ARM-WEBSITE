@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRightIcon,
   FireIcon
 } from '@heroicons/react/24/outline';
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
+import { useCart } from '../context/CartContext';
 
 const Home = () => {
+  const { addToCart } = useCart();
+  const [loadedImages, setLoadedImages] = useState({});
+  
+  const handleImageLoad = (itemId) => {
+    setLoadedImages(prev => ({ ...prev, [itemId]: true }));
+  };
+
+  const handleImageError = (e, itemId) => {
+    e.target.src = `https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop&auto=format`;
+    setLoadedImages(prev => ({ ...prev, [itemId]: true }));
+  };
+  
   const featuredDishes = [
     {
       id: 1,
@@ -72,7 +85,7 @@ const Home = () => {
       title: "Combo Deal",
       description: "Burger + Fries + Drink @ ₹399",
       code: "COMBO399",
-      bgColor: "bg-gradient-to-r from-gold-500 to-gold-600"
+      bgColor: "bg-gradient-to-r from-orange-500 to-amber-600"
     },
     {
       title: "Happy Hours",
@@ -109,14 +122,14 @@ const Home = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/menu" className="cafe-button bg-white text-coffee-800 hover:bg-coffee-50">
-              Explore Menu
+              Order Now
               <ArrowRightIcon className="w-5 h-5 ml-2 inline" />
             </Link>
             <a 
               href="tel:+919876543210"
               className="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-coffee-800 transition-all duration-300"
             >
-              Order Now
+              Call Now
             </a>
           </div>
         </div>
@@ -145,10 +158,20 @@ const Home = () => {
             {featuredDishes.map((dish) => (
               <div key={dish.id} className="bg-white rounded-2xl shadow-xl overflow-hidden card-hover">
                 <div className="relative">
+                  {!loadedImages[dish.id] && (
+                    <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+                      <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+                    </div>
+                  )}
                   <img 
                     src={dish.image} 
                     alt={dish.name}
-                    className="w-full h-64 object-cover"
+                    className={`w-full h-64 object-cover transition-opacity duration-300 ${
+                      loadedImages[dish.id] ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    onLoad={() => handleImageLoad(dish.id)}
+                    onError={(e) => handleImageError(e, dish.id)}
+                    loading="lazy"
                   />
                   {dish.isPopular && (
                     <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center">
@@ -183,7 +206,10 @@ const Home = () => {
                     </div>
                     <span className="text-2xl font-bold text-coffee-700">₹{dish.price}</span>
                   </div>
-                  <button className="w-full cafe-button">
+                  <button 
+                    onClick={() => addToCart(dish)}
+                    className="w-full cafe-button"
+                  >
                     Add to Cart
                   </button>
                 </div>
