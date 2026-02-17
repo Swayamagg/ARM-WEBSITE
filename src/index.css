@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  body {
+    @apply bg-cream text-coffee-900 font-sans;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-elegant;
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+@layer components {
+  .glass-morphism {
+    @apply bg-white/20 backdrop-blur-lg border border-white/30;
+  }
+  
+  .premium-shadow {
+    @apply shadow-2xl shadow-coffee-200/50;
+  }
+  
+  .cafe-button {
+    @apply bg-gradient-to-r from-coffee-600 to-coffee-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-coffee-700 hover:to-coffee-800 transform hover:scale-105 transition-all duration-300 shadow-lg;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 rounded-lg border border-coffee-200 focus:border-coffee-400 focus:ring-2 focus:ring-coffee-200 transition-all duration-300 bg-white/80 backdrop-blur;
+  }
+  
+  .card-hover {
+    @apply transform hover:scale-105 transition-all duration-300 hover:shadow-xl;
+  }
+  
+  .veg-indicator {
+    @apply w-3 h-3 bg-green-500 rounded-full border-2 border-green-600;
+  }
+  
+  .non-veg-indicator {
+    @apply w-3 h-3 bg-red-500 rounded-full border-2 border-red-600;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+}
